@@ -13,5 +13,5 @@ import lombok.ToString;
     private final String valor;
     private final int linha;
     private final int coluna;
-    
+
 }
