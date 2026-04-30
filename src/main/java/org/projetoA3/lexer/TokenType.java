@@ -25,7 +25,8 @@ public enum TokenType {
 
     IDENTIFICARDOR,
     STRING,
-    PONTO_VIRGULA
+    PONTO_VIRGULA,
+    EOF
 
 
 
