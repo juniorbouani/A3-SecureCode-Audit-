@@ -32,7 +32,7 @@ public class Scanner {
             Map.entry("EQUALS", TokenType.EQUALS),
             Map.entry("MATCHES", TokenType.MATCHES),
             Map.entry("NOT", TokenType.NOT),
-            Map.entry("REJEITAR", TokenType.REIJETAR),
+            Map.entry("REJEITAR", TokenType.REJEITAR),
             Map.entry("NOTIFICAR", TokenType.NOTIFICAR),
             Map.entry("SOLICITAR_MFA", TokenType.SOLICITAR_MFA),
             Map.entry("LOG_ERROR", TokenType.LOG_ERROR)
@@ -132,7 +132,7 @@ public class Scanner {
         }
         String word = sb.toString();
         // não achou no map retorna o identficador
-        TokenType type = palavrasChave.getOrDefault(word, TokenType.IDENTIFICARDOR);
+        TokenType type = palavrasChave.getOrDefault(word, TokenType.IDENTIFICADOR);
         return new Token(type, word, startLine, startCol);
 
     }
