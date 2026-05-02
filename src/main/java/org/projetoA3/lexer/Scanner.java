@@ -57,12 +57,16 @@ public class Scanner {
             //pega um cactere dentro de uma posição especifica da String
             char c = source.charAt(posicao);
 
+            // se achar um ; cir um token na hora e avança uma posição
             if (c == ';') {
                 tokens.add(new Token(TokenType.PONTO_VIRGULA, ";", linha, coluna));
                 advance();
-            } else if (c == '"') {
+            }
+            // se achou aspas significa que achou uma String, vai chamar o metodo readString() que vai ler tudo ate fechar aspas
+            else if (c == '"') {
                 tokens.add(readString());
             }
+
             else if (Character.isLetter(c) || c == '_') {
                 tokens.add(readWord());
             }
@@ -73,26 +77,64 @@ public class Scanner {
 
 
         }
+        tokens.add(new Token(TokenType.EOF, "", linha, coluna));
         return tokens;
     }
 
-    private Token readWord() {
-        return null;
-    }
-}
-
-
-    private Token readString() {
-        return null;
-
+    //Avança um caractere e atualiza a linha/coluna
+    private char advance() {
+        char c = source.charAt(posicao++);
+        if (c == 'n') { linha++; coluna = 1; }
+        else { coluna++; }
+        return c;
     }
 
     private void skipWhitespaceAndComments() {
+        while (posicao < source.length()) {
+            char c =(source.charAt(posicao));
+            if (c == '#') {
+                while( posicao < source.length() && source.charAt(posicao) != '\n') advance();
+            }
+            else if (Character.isWhitespace(c)) {
+                advance(); }
+            else {
+                break;
+            }
+        }
+    }
 
+    private Token readString() {
+        int startLine = linha, startCol = coluna;
+        advance();
+        StringBuilder sb = new StringBuilder();
+        while (posicao < source.length() && source.charAt(posicao) != '"') {
+            sb.append(advance());
+        }
+        if (posicao >= source.length()) {
+            throw new LexicalException("String não fechada na linha: ", startLine, startCol);
+        }
+        advance();
+        return new Token(TokenType.STRING, sb.toString(), startLine, startCol);
+    }
+
+
+    private Token readWord() {
+        int startLine = linha, startCol = coluna;
+        StringBuilder sb = new StringBuilder();
+        while (posicao < source.length()) {
+            char c = source.charAt(posicao);
+            if (Character.isLetterOrDigit(c) || c == '_') {
+                sb.append(advance());
+            }
+            else {
+                break;
+            }
+        }
+        String word = sb.toString();
+        // não achou no map retorna o identficador
+        TokenType type = palavrasChave.getOrDefault(word, TokenType.IDENTIFICARDOR);
+        return new Token(type, word, startLine, startCol);
 
     }
 
-    private void advance() {
-
-
-    }
+}
