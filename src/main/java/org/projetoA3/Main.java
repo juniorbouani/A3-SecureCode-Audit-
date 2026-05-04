@@ -12,8 +12,8 @@ public class Main {
     public static void main (String[] args) {
     String code = """
             AUDITORIA MINHA_AUDITORIA DEFINIR
-                REGRA SQL_INJECTION NIVEL ALTA SE TOKEN CONTAINS "DROP" ACAO REJEITAR;
-            EXECUTAR FIM 
+            REGRA SQL_INJECTION NIVEL ALTA SE TOKEN CONTAINS "DROP" ACAO REJEITAR;
+            EXECUTAR FIM
             """;
 
     Scanner scanner = new Scanner(code);
