@@ -84,7 +84,7 @@ public class Scanner {
     //Avança um caractere e atualiza a linha/coluna
     private char advance() {
         char c = source.charAt(posicao++);
-        if (c == 'n') { linha++; coluna = 1; }
+        if (c == '\n') { linha++; coluna = 1; }
         else { coluna++; }
         return c;
     }
