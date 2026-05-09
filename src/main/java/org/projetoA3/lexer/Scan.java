@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Scanner {
+public class Scan {
 
     private static final Map<String, TokenType> palavrasChave = Map.ofEntries(
             Map.entry("AUDITORIA", TokenType.AUDITORIA),
@@ -43,7 +43,7 @@ public class Scanner {
     private int linha = 1;
     private int coluna = 1;
 
-    public Scanner(String source) {
+    public Scan(String source) {
         this.source = source;
     }
 

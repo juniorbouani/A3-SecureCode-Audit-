@@ -129,9 +129,5 @@ public class Parser {
         }
         throw new SyntaxException("Ação inválida '" + t.getValor() + "'. Use: REJIETAR, NOTIFICAR, SOLICITAR_MFA ou LOG_ERROR",
                 t.getLinha(), t.getColuna());
-
-
-
-
     }
 }

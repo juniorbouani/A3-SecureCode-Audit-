@@ -28,7 +28,4 @@ public enum TokenType {
     PONTO_VIRGULA,
     EOF
 
-
-
-
 }
