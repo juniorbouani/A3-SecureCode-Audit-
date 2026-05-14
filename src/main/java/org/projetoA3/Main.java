@@ -1,12 +1,14 @@
 package org.projetoA3;
 
 import org.projetoA3.ast.ProjetoNode;
+import org.projetoA3.engine.InferenceEngine;
 import org.projetoA3.excessoes.FileException;
 import org.projetoA3.excessoes.LexicalException;
 import org.projetoA3.excessoes.SemanticException;
 import org.projetoA3.excessoes.SyntaxException;
 import org.projetoA3.lexer.Scan;
 import org.projetoA3.lexer.Token;
+import org.projetoA3.lexer.TokenType;
 import org.projetoA3.parser.Parser;
 import org.projetoA3.semantic.SemanticAnalyzer;
 
@@ -15,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,8 +38,7 @@ public class Main {
             scan.nextLine();
 
             for (int i = 1; i <= n; i++) {
-
-
+                
                 System.out.println("Digite o caminho do arquivo: ");
                 String caminho = scan.nextLine();
 
@@ -60,8 +62,22 @@ public class Main {
                     SemanticAnalyzer semantic = new SemanticAnalyzer(projeto);
                     semantic.analisar();
 
-                    System.out.println(projeto);
+                    System.out.println("\nDigite o caminho do arquivo de log: ");
+                    String caminhoLog = scan.nextLine().trim();
 
+                    List<String> linhasLog = new ArrayList<>();
+
+                    try  (BufferedReader brLog = new BufferedReader(new FileReader(caminhoLog))) {
+                            String linhaLog;
+                            while ((linhaLog = brLog.readLine()) != null) {
+                                if (!linhaLog.isBlank()) {
+                                    linhasLog.add(linhaLog);
+                                }
+                            }
+                    }
+
+                    InferenceEngine engine = new InferenceEngine(projeto);
+                    engine.processar(linhasLog);
 
                 } catch (LexicalException e) {
                     System.err.println(e.getMessage());
@@ -78,7 +94,7 @@ public class Main {
                 } catch (SemanticException e) {
                     System.err.println(e.getMessage());
                 }
-                scan.nextLine();
+
             }
             System.out.println("Deseja analisar mais arquivos? (s/n):");
             escolha = scan.nextLine().trim().charAt(0);

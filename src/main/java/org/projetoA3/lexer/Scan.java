@@ -74,8 +74,6 @@ public class Scan {
                 throw new LexicalException("Caractere inesperado '" + c + "'", linha, coluna);
 
             }
-
-
         }
         tokens.add(new Token(TokenType.EOF, "", linha, coluna));
         return tokens;
@@ -116,7 +114,6 @@ public class Scan {
         advance();
         return new Token(TokenType.STRING, sb.toString(), startLine, startCol);
     }
-
 
     private Token readWord() {
         int startLine = linha, startCol = coluna;
