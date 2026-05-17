@@ -33,6 +33,7 @@ public class InferenceEngine {
                         " → Nenhuma regra violada.");
             }
         }
+        System.out.println("\n=== FIM ===\n");
     }
 
     private boolean avaliarRegra(RegraNode regra, String linhaLog) {

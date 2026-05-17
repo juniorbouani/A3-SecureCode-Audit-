@@ -8,10 +8,8 @@ import org.projetoA3.excessoes.SemanticException;
 import org.projetoA3.excessoes.SyntaxException;
 import org.projetoA3.lexer.Scan;
 import org.projetoA3.lexer.Token;
-import org.projetoA3.lexer.TokenType;
 import org.projetoA3.parser.Parser;
 import org.projetoA3.semantic.SemanticAnalyzer;
-
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -38,7 +36,7 @@ public class Main {
             scan.nextLine();
 
             for (int i = 1; i <= n; i++) {
-                
+
                 System.out.println("Digite o caminho do arquivo: ");
                 String caminho = scan.nextLine();
 
