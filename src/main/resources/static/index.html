@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>Secure Code</title>
+</head>
+<body>
+<div class="container">
+  <h1>Secure Code</h1>
+
+
+  <div class="grid-layout">
+    <div class="upload-section">
+      <span class="label-text">Anexe o arquivo .sc</span>
+      <button class="upload-btn" onclick="document.getElementById('inputSc').click()">
+        <img src="./img/icone-preto.svg" alt="" />
+      </button>
+      <input type="file" id="inputSc" accept=".sc" hidden />
+      <div class="preview-box" id="previewSc">
+        <span class="preview-placeholder">Nenhum arquivo selecionado...</span>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <span class="label-text">Anexe o arquivo de log</span>
+      <button class="upload-btn" onclick="document.getElementById('inputLog').click()">
+        <img src="./img/icone-preto.svg" alt="" />
+      </button>
+      <input type="file" id="inputLog" accept=".log,.txt" hidden />
+      <div class="preview-box" id="previewLog">
+        <span class="preview-placeholder">Nenhum arquivo selecionado...</span>
+      </div>
+    </div>
+  </div>
+
+
+  <button class="process-btn" onclick="processar()">
+    Processar
+  </button>
+
+
+  <div class="grid-layout output-grid">
+    <div class="output-section">
+      <span class="output-label">Análise do Compilador</span>
+      <span class="output-subtitle">Scanner · Parser · Semântico</span>
+      <div class="output-box" id="outputCompilador">
+        Nenhum arquivo processado ainda...
+      </div>
+    </div>
+
+    <div class="output-section">
+      <span class="output-label">Relatório de Violações</span>
+      <span class="output-subtitle">Motor de Inferência</span>
+      <div class="output-box" id="outputViolacoes">
+        Nenhum arquivo processado ainda...
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('inputSc').addEventListener('change', function () {
+    const preview = document.getElementById('previewSc');
+    preview.innerHTML = this.files[0]
+            ? `<span class="preview-filename">📄 ${this.files[0].name}</span>`
+            : `<span class="preview-placeholder">Nenhum arquivo selecionado</span>`;
+  });
+
+  document.getElementById('inputLog').addEventListener('change', function () {
+    const preview = document.getElementById('previewLog');
+    preview.innerHTML = this.files[0]
+            ? `<span class="preview-filename">📄 ${this.files[0].name}</span>`
+            : `<span class="preview-placeholder">Nenhum arquivo selecionado</span>`;
+  });
+
+  async function processar() {
+    const fileSc  = document.getElementById('inputSc').files[0];
+    const fileLog = document.getElementById('inputLog').files[0];
+
+    if (!fileSc || !fileLog) {
+      alert('Selecione os dois arquivos antes de processar!');
+      return;
+    }
+
+    document.getElementById('outputCompilador').textContent = 'Processando...';
+    document.getElementById('outputViolacoes').textContent  = 'Processando...';
+
+    const formData = new FormData();
+    formData.append('regras', fileSc);
+    formData.append('log', fileLog);
+
+    try {
+
+      const response = await fetch('/api/analisar', {
+        method: 'POST',
+        body: formData
+      });
+
+      const resultado = await response.json();
+
+      document.getElementById('outputCompilador').textContent = resultado.analiseCompilador;
+      document.getElementById('outputViolacoes').textContent  = resultado.violacoes.join('\n');
+
+    } catch (err) {
+      document.getElementById('outputCompilador').textContent = 'Erro ao conectar com o backend.';
+      document.getElementById('outputViolacoes').textContent  = 'Verifique se o servidor está rodando.';
+    }
+  }
+</script>
+</body>
+</html>

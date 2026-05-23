@@ -4,6 +4,7 @@ import org.projetoA3.ast.ProjetoNode;
 import org.projetoA3.ast.RegraNode;
 import org.projetoA3.ast.TermoSegNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InferenceEngine {
@@ -12,28 +13,30 @@ public class InferenceEngine {
 
     public InferenceEngine(ProjetoNode projeto)  { this.projeto = projeto; }
 
-    public void processar(List<String> linhasLog) {
-        System.out.println("\n=== MOTOR DE INFERENCIA ===\n");
+    public List<String> processar(List<String> linhaslog){
+        List<String> resultado = new ArrayList<>();
+        resultado.add("\n=== MOTOR DE INFERENCIA ===\n");
 
-        for (int i=0; i<linhasLog.size(); i++) {
-            String linhaLog = linhasLog.get(i);
+        for (int i=0; i<linhaslog.size(); i++) {
+            String linhaLog = linhaslog.get(i);
             int numeroLinha = i + 1;
             boolean algumViolado = false;
 
             for(RegraNode regra : projeto.getRegras()) {
                 if (avaliarRegra(regra, linhaLog)) {
-                    System.out.println("VIOLACAO Linha " + numeroLinha +
+                    resultado.add("VIOLACAO Linha " + numeroLinha +
                             " → Regra '" + regra.getNome() +
                             "' violada! Ação: " + regra.getAcao());
                     algumViolado = true;
                 }
             }
             if (!algumViolado) {
-                System.out.println("OK! Linha " + numeroLinha +
+                resultado.add("OK! Linha " + numeroLinha +
                         " → Nenhuma regra violada.");
             }
         }
-        System.out.println("\n=== FIM ===\n");
+        resultado.add("\n=== FIM DA ANALISE ===\n");
+        return resultado;
     }
 
     private boolean avaliarRegra(RegraNode regra, String linhaLog) {
